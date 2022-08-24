@@ -1,41 +1,48 @@
 import 'package:flutter/material.dart';
 
 class BtnSizes extends StatelessWidget {
-  final List<double> sizes = [0.4, 0.6, 10, 12];
-  BtnSizes({Key? key}) : super(key: key);
+  final Function handleChange;
+  final double sizeSelected;
+  final List<double> sizes = [7, 7.5, 8, 8.5, 9];
+  BtnSizes({Key? key, required this.handleChange, required this.sizeSelected})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    void handlePress(double size) {
-      print(size);
+    void handleChangeSize(double size) {
+      handleChange(size);
     }
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [...sizes.map((e) => btnSize(e, handlePress, 0.6)).toList()],
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        ...sizes.map((e) => btnSize(e, handleChangeSize, sizeSelected)).toList()
+      ],
     );
   }
 
   Widget btnSize(double size, Function onPress, double sizeSelected) {
     TextStyle styleTextSelect = TextStyle(
-        color: sizeSelected == size ? Colors.white : Colors.amber,
+        color: sizeSelected == size ? Colors.white : const Color(0xFFFC9626),
         fontFamily: 'Poppins',
-        fontSize: 11,
+        fontSize: 10,
         fontWeight: FontWeight.bold);
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 0),
-      child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              elevation: 3,
-              primary: sizeSelected == size ? Colors.amber : Colors.white,
-              shape: const CircleBorder()),
-          onPressed: () => onPress(size),
-          child: Text(
-            '$size',
-            style: styleTextSelect,
-          )),
-    );
+    return Container(
+        width: 48,
+        height: 30,
+        margin: const EdgeInsets.symmetric(horizontal: 2),
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 2,
+              primary:
+                  sizeSelected == size ? const Color(0xFFFC9626) : Colors.white,
+            ),
+            onPressed: () => onPress(size),
+            child: Text(
+              '$size',
+              style: styleTextSelect,
+            )));
   }
 }
